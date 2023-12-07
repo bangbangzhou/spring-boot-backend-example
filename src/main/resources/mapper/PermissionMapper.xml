@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zbbmeta.mapper.PermissionMapper">
+
+    <resultMap id="BaseResultMap" type="com.zbbmeta.entity.Permission">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="code" column="code" jdbcType="VARCHAR"/>
+            <result property="description" column="description" jdbcType="VARCHAR"/>
+
+
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,name,code,
+        description
+    </sql>
+
+    <select id="queryPermissionList" resultType="com.zbbmeta.entity.Permission">
+        select * from pe_permission pp
+                          inner join pe_role_permission prp on pp.id = prp.permission_id
+        where prp.role_id=#{id}
+    </select>
+</mapper>

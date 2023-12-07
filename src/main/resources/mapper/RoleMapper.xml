@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zbbmeta.mapper.RoleMapper">
+
+    <resultMap id="BaseResultMap" type="com.zbbmeta.entity.Role">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="description" column="description" jdbcType="VARCHAR"/>
+        <collection property="permissions" ofType="com.zbbmeta.entity.Permission"
+                    select="com.zbbmeta.mapper.PermissionMapper.queryPermissionList" column="id">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="code" column="code" jdbcType="VARCHAR"/>
+            <result property="description" column="description" jdbcType="VARCHAR"/>
+        </collection>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,name,description
+    </sql>
+
+    <select id="queryRoleListByUserId" resultMap="BaseResultMap">
+        select distinct pr.* from pe_user_role pur
+                                      inner join pe_role pr on pur.role_id =pr.id
+        where pur.user_id =#{id}
+    </select>
+</mapper>

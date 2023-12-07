@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zbbmeta.mapper.UserMapper">
+
+    <resultMap id="BaseResultMap" type="com.zbbmeta.entity.User">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="username" column="username" jdbcType="VARCHAR"/>
+            <result property="password" column="password" jdbcType="VARCHAR"/>
+
+        <!--一对多映射用这个  ofTyp是一对多的集合的所存放的实体类  javaType实体类的属性类型-->
+        <collection property="roles" ofType="com.zbbmeta.entity.Role"
+                    select="com.zbbmeta.mapper.RoleMapper.queryRoleListByUserId" column="id">
+            <id property="id" column="id" jdbcType="VARCHAR"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="description" column="description" jdbcType="VARCHAR"/>
+        </collection>
+
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,username,password
+    </sql>
+
+    <select id="findByUsername" resultMap="BaseResultMap">
+        select * from pe_user where username=#{name};
+    </select>
+</mapper>
